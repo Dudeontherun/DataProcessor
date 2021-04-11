@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/DataProcessor.Test/FULLTEXT231.csv
+/DataProcessor.Test/FULLTEXT.csv

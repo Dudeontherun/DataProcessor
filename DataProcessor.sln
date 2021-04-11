@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Test", "DataProcessor.Test\DataProcessor.Test.csproj", "{BA929FAC-B72C-48EF-91CC-6A24FD91C874}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CADFC41A-6894-4FC2-AE66-ECA659069AE9}
+	EndGlobalSection
+EndGlobal
