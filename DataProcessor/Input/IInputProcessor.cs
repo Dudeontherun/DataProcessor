@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DataProcessor.Buffer;
+using System.Collections.Generic;
 
 namespace DataProcessor.Interfaces
 {
-	public interface IInputProcessor
+	public interface IInputProcessor: IOutBuffer
 	{
 		public IProcessor Processor { get; }
-
-		/// <summary>
-		/// Grabs an item from the input processor.
-		/// </summary>
-		public IDataRow Read();
-
-		public bool IsFinished();
-		public List<IDataRow> GetBufferItems();
 
 		public bool IsSingleThreaded { get; }
 

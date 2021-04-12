@@ -1,4 +1,5 @@
-﻿using DataProcessor.Interfaces;
+﻿using DataProcessor.Buffer;
+using DataProcessor.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace DataProcessor
 {
-	public class ConcurrentBuffer : IDisposable
+	public class ConcurrentBuffer : IDisposable, IBuffer, IOutBuffer
 	{
 		private BlockingCollection<IDataRow> _buffer;
 
@@ -19,7 +20,14 @@ namespace DataProcessor
 
 		public IDataRow Take()
 		{
-			if (this._buffer.IsCompleted == false) { return this._buffer.Take(); }
+			if (this._buffer.IsCompleted == false) 
+			{
+				try
+				{
+					return this._buffer.Take();
+				}
+				catch (Exception e) { return null; }
+			}
 			else { return null; }
 		}
 

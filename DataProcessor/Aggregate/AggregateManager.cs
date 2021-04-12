@@ -1,4 +1,5 @@
 ﻿using DataProcessor.Base;
+using DataProcessor.Buffer;
 using DataProcessor.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,23 @@ namespace DataProcessor.Aggregate
 	[Serializable]
 	public class AggregateManager : BaseProcessor, IAggregateManager
 	{
-		public IInputProcessor InputProcessor { get; private set; }
+		protected IOutBuffer InputBuffer { get; private set; }
+		IOutBuffer IAggregateManager.InputBuffer => InputBuffer;
+
+		[XmlIgnore]
+		private ConcurrentBuffer _readBuffer;
 
 		private List<IAggregate> _aggregates = new List<IAggregate>();
 
 		[XmlIgnore]
 		private bool _isFinished = false;
-		
+
 		public bool IsFinished() => _isFinished;
 
-		[XmlIgnore]
-		private ConcurrentBuffer _readBuffer;
 
-		public AggregateManager(IInputProcessor inputProcessor, int boundedCapacity, int numOfThreads) : base(numOfThreads)
+		public AggregateManager(IOutBuffer inputBuffer, int boundedCapacity, int numOfThreads) : base(numOfThreads)
 		{
-			this.InputProcessor = inputProcessor;
+			this.InputBuffer = inputBuffer;
 			this._readBuffer = new ConcurrentBuffer(boundedCapacity);
 			this._isFinished = false;
 		}
@@ -63,19 +66,6 @@ namespace DataProcessor.Aggregate
 			return list;
 		}
 
-		public IDataRow Read()
-		{
-			IDataRow row = null;
-			try 
-			{
-				if (this._readBuffer.IsCompleted() == false) { row = this._readBuffer.Take(); }
-				else { this._isFinished = true; }
-			}
-			catch (Exception e) { this._isFinished = true; }
-
-			return row;
-		}
-
 		public void ProcesstTest()
 		{
 			this._isRunning = true;
@@ -87,7 +77,7 @@ namespace DataProcessor.Aggregate
 		{
 			while (this._isRunning)
 			{
-				var record = this.InputProcessor.Read();
+				var record = this.InputBuffer.Take();
 
 				if (record == null) { this._readBuffer.CompleteAdding(); break; }
 
@@ -105,5 +95,11 @@ namespace DataProcessor.Aggregate
 				this._readBuffer.Add(record);
 			}
 		}
+
+		IDataRow IOutBuffer.Take() => this._readBuffer.Take();
+
+		bool IOutBuffer.TryTake(out IDataRow row) => this._readBuffer.TryTake(out row);
+
+		bool IOutBuffer.IsCompleted() => this._readBuffer.IsCompleted();
 	}
 }

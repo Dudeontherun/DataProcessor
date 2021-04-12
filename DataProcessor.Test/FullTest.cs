@@ -18,9 +18,9 @@ namespace DataProcessor.Test
 	public class FullTest
 	{
 		[TestMethod]
-		public void RunFullTest()
+		public void PopulateTestData()
 		{
-			int numOfRows = 20000000;
+			int numOfRows = 5000000;
 
 			var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
 			{
@@ -28,24 +28,24 @@ namespace DataProcessor.Test
 				BufferSize = 10000,
 			};
 
-			ConcurrentBuffer buffer = new ConcurrentBuffer(1000);
+			ConcurrentBuffer buffer = new ConcurrentBuffer(10000);
 			Task.Run(() =>
+			{
+				Enumerable.Range(0, numOfRows).ToList().ForEach(j =>
 				{
-					Enumerable.Range(0, numOfRows).ToList().ForEach(j =>
-				  {
-					  string[] header = { "field1", "field2", "field3", "field4", "field5", "field6", "field7", "field8", "field9", "field00" };
-					  string[] data = new string[10];
-					  for (int i = 0; i < data.Length; i++)
-					  {
-						  data[i] = Guid.NewGuid().ToString();
-					  }
+					string[] header = { "field1", "field2", "field3", "field4", "field5", "field6", "field7", "field8", "field9", "field00" };
+					string[] data = new string[10];
+					for (int i = 0; i < data.Length; i++)
+					{
+						data[i] = Guid.NewGuid().ToString();
+					}
 
-					  IDataRow row = new DataRow.BaseDataRow(header, data);
+					IDataRow row = new DataRow.BaseDataRow(header, data);
 
-					  buffer.Add(row);
-				  });
-					buffer.CompleteAdding();
-				}
+					buffer.Add(row);
+				});
+				buffer.CompleteAdding();
+			}
 			);
 
 			using (CsvHelper.CsvWriter writer = new CsvHelper.CsvWriter(new StreamWriter(@"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT.csv", false), config))
@@ -67,34 +67,41 @@ namespace DataProcessor.Test
 					WriteRecord(writer, record);
 				}
 			}
-
-			CsvInputProcessor input = new CsvInputProcessor(20000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT.csv");
-			AggregateManager manager = new AggregateManager(input, 20000, 1);
-			Aggregate.Aggregate aggregate = new Aggregate.Aggregate(new Func<object, object>(i =>
+		}
+		
+		[TestMethod]
+		public void RunFullTest()
+		{
+			try
 			{
-				object ret = null;	
-				if(i is string)
+				CsvInputProcessor input = new CsvInputProcessor(20000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT.csv");
+				AggregateManager manager = new AggregateManager(input, 20000, 1);
+				Aggregate.Aggregate aggregate = new Aggregate.Aggregate(new Func<object, object>(i =>
 				{
-					string a = (string)i;
-					ret = a.Substring(0, 1);
+					object ret = null;
+					if (i is string)
+					{
+						string a = (string)i;
+						ret = a.Substring(0, 1);
+					}
+
+					return ret;
+				}), "field1", Guid.NewGuid());
+
+				manager.AddAggregate(aggregate);
+
+				CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT231.csv");
+
+				BaseDataProcessor processor = new BaseDataProcessor(input, manager, output);
+
+				processor.Start();
+
+				while (!processor.IsFinished())
+				{
+					Thread.Sleep(1000);
 				}
-
-				return ret;
-			}), "field1", Guid.NewGuid());
-
-			manager.AddAggregate(aggregate);
-
-			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT231.csv");
-
-			BaseDataProcessor processor = new BaseDataProcessor(input, manager, output);
-
-			processor.Start();
-
-			while(!processor.IsFinished())
-			{
-				Thread.Sleep(1000);
 			}
-
+			catch (Exception e) { Assert.Fail(e.Message); }
 			string x = "";
 		}
 
@@ -109,7 +116,6 @@ namespace DataProcessor.Test
 
 			writer.NextRecord();
 		}
-
 		private void WriteRecord(CsvHelper.CsvWriter writer, IDataRow record)
 		{
 			int columnCount = record.GetColumnCount();

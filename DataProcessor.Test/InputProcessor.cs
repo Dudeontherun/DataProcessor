@@ -49,7 +49,7 @@ namespace DataProcessor.Test
 
 			manager.ProcesstTest();
 
-			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestData.csv");
+			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestDataaa.csv");
 
 			output.ProcessTest();
 

@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using DataProcessor.Buffer;
+using System.Collections.Generic;
 
 namespace DataProcessor.Interfaces
 {
-	public interface IAggregateManager : IProcessor
+	public interface IAggregateManager : IProcessor, IOutBuffer
 	{
-		public IInputProcessor InputProcessor { get; }
+		protected IOutBuffer InputBuffer { get; }
 
-		public bool IsFinished();
-		public List<IDataRow> GetBufferItems();
-		public IDataRow Read();
 		public void AddAggregate(IAggregate aggregate);
 		public void AddAggregate(int position, IAggregate aggregate);
 		public bool RemoveAggregate(IAggregate aggregate);

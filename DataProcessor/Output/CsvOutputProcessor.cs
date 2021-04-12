@@ -1,4 +1,5 @@
 ﻿using DataProcessor.Base;
+using DataProcessor.Buffer;
 using DataProcessor.Interfaces;
 using System;
 using System.IO;
@@ -8,19 +9,21 @@ namespace DataProcessor.Output
 	public sealed class CsvOutputProcessor : BaseProcessor, IOutputProcessor
 	{
 		private FileInfo _info;
-		IProcessor IOutputProcessor.Processor { get => this; }
 		bool IOutputProcessor.IsSingleThreaded => true;
-		public IAggregateManager Manager { get; private set; }
+
+		private IOutBuffer _inputBuffer;
+		IOutBuffer IOutputProcessor.InputBuffer => this._inputBuffer;
 
 		private bool _isFinished = false;
-		public bool IsFinished() => _isFinished;
 
-		public CsvOutputProcessor(IAggregateManager manager, string filePath) : base(1)
+		public bool IsCompleted() => _isFinished;
+
+		public CsvOutputProcessor(IOutBuffer inputBuffer, string filePath) : base(1)
 		{
 			this._info = new FileInfo(filePath);
 			if (!this._info.Exists) { _info.Create().Close(); }
 
-			this.Manager = manager;
+			this._inputBuffer = inputBuffer;
 		}
 
 		public void ProcessTest()
@@ -40,7 +43,7 @@ namespace DataProcessor.Output
 
 			using (CsvHelper.CsvWriter writer = new CsvHelper.CsvWriter(new StreamWriter(this._info.FullName), config))
 			{
-				IDataRow record = this.Manager.Read();
+				IDataRow record = this._inputBuffer.Take();
 
 				if (record == null) { throw new Exception("No record found."); }
 
@@ -49,7 +52,7 @@ namespace DataProcessor.Output
 
 				while (this._isRunning)
 				{
-					record = this.Manager.Read();
+					record = this._inputBuffer.Take();
 
 					//No more to read
 					if (record == null) { break; }
@@ -84,9 +87,5 @@ namespace DataProcessor.Output
 			}
 			writer.NextRecord();
 		}
-
-		void IOutputProcessor.Start() => base.Start();
-		void IOutputProcessor.Stop(bool forceStop) => base.Stop(forceStop);
-
 	}
 }

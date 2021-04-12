@@ -18,7 +18,7 @@ namespace DataProcessor.Base
 
 		public bool IsFinished()
 		{
-			return Input.IsFinished() && AggregateManager.IsFinished() && Output.IsFinished();
+			return Input.IsCompleted() && AggregateManager.IsCompleted() && Output.IsCompleted();
 		}
 
 		public void Start()

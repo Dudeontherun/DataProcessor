@@ -1,4 +1,5 @@
 ﻿using DataProcessor.Base;
+using DataProcessor.Buffer;
 using DataProcessor.DataRow;
 using DataProcessor.Interfaces;
 using Microsoft.VisualBasic.FileIO;
@@ -12,10 +13,6 @@ namespace DataProcessor.Input
 	[Serializable]
 	public class CsvInputProcessor : BaseProcessor, IInputProcessor
 	{
-		[XmlIgnore]
-		private bool _isFinished = false;
-		public bool IsFinished() => _isFinished;
-
 		[XmlIgnore]
 		private readonly ConcurrentBuffer _readBuffer;
 
@@ -38,28 +35,6 @@ namespace DataProcessor.Input
 		{
 			var list = this._readBuffer.GetBufferItems();
 			return list;
-		}
-
-		public IDataRow Read()
-		{
-			IDataRow row = null;
-			try
-			{
-				if (this._readBuffer.IsCompleted() == false)
-				{
-					if (this._readBuffer.TryTake(out row) == false && this._readBuffer.IsCompleted() == true)
-					{
-						if(row == null) { throw new Exception("WHAT HAPPENED???"); }
-					}
-					else
-					{
-						if (row == null) { row = this._readBuffer.Take(); }
-					}
-				}
-				else { this._isFinished = true; }
-			}
-			catch (Exception e) { this._isFinished = true; }
-			return row;
 		}
 
 		public void ProcessTest()
@@ -95,9 +70,13 @@ namespace DataProcessor.Input
 			this._isRunning = false;
 		}
 
-		List<IDataRow> IInputProcessor.GetBufferItems() => this.GetBufferItems();
-
 		void IInputProcessor.Start() => base.Start();
 		void IInputProcessor.Stop(bool forceStop) => base.Stop(forceStop);
+
+		IDataRow IOutBuffer.Take() => this._readBuffer.Take();
+
+		bool IOutBuffer.TryTake(out IDataRow row) => this._readBuffer.TryTake(out row);
+
+		bool IOutBuffer.IsCompleted() => this._readBuffer.IsCompleted();
 	}
 }
