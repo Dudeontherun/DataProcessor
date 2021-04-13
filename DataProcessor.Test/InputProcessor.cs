@@ -11,7 +11,7 @@ namespace DataProcessor.Test
 		[TestMethod]
 		public void RunInput()
 		{
-			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestData.csv");
+			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\TestData.csv");
 
 			processor.ProcessTest();
 
@@ -23,7 +23,7 @@ namespace DataProcessor.Test
 		[TestMethod]
 		public void RunAggregate()
 		{
-			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestData.csv");
+			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\TestData.csv");
 
 			processor.ProcessTest();
 
@@ -41,7 +41,7 @@ namespace DataProcessor.Test
 		[TestMethod]
 		public void RunOutput()
 		{
-			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestData.csv");
+			CsvInputProcessor processor = new CsvInputProcessor(64000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\TestData.csv");
 
 			processor.ProcessTest();
 
@@ -49,7 +49,7 @@ namespace DataProcessor.Test
 
 			manager.ProcesstTest();
 
-			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\TestDataaa.csv");
+			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\TestDataaa.csv");
 
 			output.ProcessTest();
 

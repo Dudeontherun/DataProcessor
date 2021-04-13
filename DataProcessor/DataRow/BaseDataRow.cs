@@ -30,11 +30,13 @@ namespace DataProcessor.DataRow
 		public void AddColumn(string columnName)
 		{
 			this._fields.Add(columnName, String.Empty);
+			this._index.Add(this._fields.Count - 1, columnName);
 		}
 
 		public void AddColumn(string columnName, object obj)
 		{
 			this._fields.Add(columnName, obj);
+			this._index.Add(this._fields.Count - 1, columnName);
 		}
 
 		public object GetColumn(int index)

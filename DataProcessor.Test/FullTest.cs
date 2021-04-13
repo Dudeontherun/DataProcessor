@@ -20,7 +20,7 @@ namespace DataProcessor.Test
 		[TestMethod]
 		public void PopulateTestData()
 		{
-			int numOfRows = 5000000;
+			int numOfRows = 5000;
 
 			var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
 			{
@@ -48,7 +48,7 @@ namespace DataProcessor.Test
 			}
 			);
 
-			using (CsvHelper.CsvWriter writer = new CsvHelper.CsvWriter(new StreamWriter(@"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT.csv", false), config))
+			using (CsvHelper.CsvWriter writer = new CsvHelper.CsvWriter(new StreamWriter(@"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\FULLTEXT.csv", false), config))
 			{
 				IDataRow record = buffer.Take();
 
@@ -66,6 +66,7 @@ namespace DataProcessor.Test
 
 					WriteRecord(writer, record);
 				}
+				writer.Flush();
 			}
 		}
 		
@@ -74,7 +75,7 @@ namespace DataProcessor.Test
 		{
 			try
 			{
-				CsvInputProcessor input = new CsvInputProcessor(20000, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT.csv");
+				CsvInputProcessor input = new CsvInputProcessor(20000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\FULLTEXT.csv");
 				AggregateManager manager = new AggregateManager(input, 20000, 1);
 				Aggregate.Aggregate aggregate = new Aggregate.Aggregate(new Func<object, object>(i =>
 				{
@@ -103,7 +104,7 @@ namespace DataProcessor.Test
 				manager.AddAggregate(aggregate);
 				manager.AddAggregate(aggregate1);
 
-				CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT231.csv");
+				CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\FULLTEXT231.csv");
 
 				BaseDataProcessor processor = new BaseDataProcessor(input, manager, output);
 
@@ -115,7 +116,9 @@ namespace DataProcessor.Test
 				}
 			}
 			catch (Exception e) { Assert.Fail(e.Message); }
-			string x = "";
+			
+
+			//TODO: verify new columns
 		}
 
 		private void WriteHeader(CsvHelper.CsvWriter writer, IDataRow record)

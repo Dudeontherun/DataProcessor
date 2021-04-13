@@ -97,7 +97,7 @@ namespace DataProcessor.Aggregate
 					newRecord.AddColumn(aggregate.NewColumnName, newValue);
 				}
 
-				this._readBuffer.Add(record);
+				this._readBuffer.Add(newRecord);
 			}
 		}
 
