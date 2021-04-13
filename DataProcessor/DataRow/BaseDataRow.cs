@@ -10,6 +10,9 @@ namespace DataProcessor.DataRow
 		private Dictionary<string, object> _fields = new Dictionary<string, object>();
 		private Dictionary<int, string> _index = new Dictionary<int, string>();
 
+		public BaseDataRow()
+		{ }
+
 		public BaseDataRow(string[] headerFields, string[] fields)
 		{
 			if (headerFields == null || fields == null) { throw new ArgumentNullException(); }

@@ -1,5 +1,6 @@
 ﻿using DataProcessor.Base;
 using DataProcessor.Buffer;
+using DataProcessor.DataRow;
 using DataProcessor.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -82,14 +83,18 @@ namespace DataProcessor.Aggregate
 				if (record == null) { this._readBuffer.CompleteAdding(); break; }
 
 				var aggregates = GetAggregates();
+
+				//TODO: Change this to copy same object from record.
+				IDataRow newRecord = new BaseDataRow();
+
 				for (int i = 0; i < aggregates.Count; i++)
 				{
 					var aggregate = aggregates[i];
-					var value = record.GetColumn(aggregate.ColumnName);
+					var value = record.GetColumn(aggregate.OldColumnName);
 
-					value = aggregate.ProcessItem(value);
+					var newValue = aggregate.ProcessColumn(value);
 
-					record.SetColumn(i, value);
+					newRecord.AddColumn(aggregate.NewColumnName, newValue);
 				}
 
 				this._readBuffer.Add(record);

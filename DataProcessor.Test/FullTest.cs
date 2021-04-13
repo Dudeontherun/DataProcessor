@@ -86,9 +86,22 @@ namespace DataProcessor.Test
 					}
 
 					return ret;
-				}), "field1", Guid.NewGuid());
+				}), "field1", "bubba", Guid.NewGuid());
+
+				Aggregate.Aggregate aggregate1 = new Aggregate.Aggregate(new Func<object, object>(i =>
+				{
+					object ret = null;
+					if (i is string)
+					{
+						string a = (string)i;
+						ret = a.Substring(0, 4);
+					}
+
+					return ret;
+				}), "field1", "field1", Guid.NewGuid());
 
 				manager.AddAggregate(aggregate);
+				manager.AddAggregate(aggregate1);
 
 				CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\source\repos\DataProcessor.Test\FULLTEXT231.csv");
 
@@ -116,6 +129,7 @@ namespace DataProcessor.Test
 
 			writer.NextRecord();
 		}
+
 		private void WriteRecord(CsvHelper.CsvWriter writer, IDataRow record)
 		{
 			int columnCount = record.GetColumnCount();

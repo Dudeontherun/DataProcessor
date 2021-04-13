@@ -6,8 +6,10 @@ namespace DataProcessor.Interfaces
 	{
 		public Guid Id { get; set; }
 
-		public string ColumnName { get; set; }
-		public object ProcessItem(object item);
+		public string OldColumnName { get; set; }
+		public string NewColumnName { get; set; }
+
+		public object ProcessColumn(object item);
 
 		public Func<object, object> Function { get; set; }
 	}
