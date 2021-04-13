@@ -84,7 +84,7 @@ namespace DataProcessor.Aggregate
 
 				var aggregates = GetAggregates();
 
-				//TODO: Change this to copy same object from record.
+				//TODO: Change this to know which object to use.
 				IDataRow newRecord = new BaseDataRow();
 
 				for (int i = 0; i < aggregates.Count; i++)
