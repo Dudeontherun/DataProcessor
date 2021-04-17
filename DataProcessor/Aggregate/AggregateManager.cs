@@ -90,9 +90,15 @@ namespace DataProcessor.Aggregate
 				for (int i = 0; i < aggregates.Count; i++)
 				{
 					var aggregate = aggregates[i];
-					var value = record.GetColumn(aggregate.OldColumnName);
+					object[] oldValues = new object[aggregate.OldColumnNames.Length];
+					for(int j = 0; j < oldValues.Length; j++)
+					{
+						string oldColumnName = aggregate.OldColumnNames[j];
+						var value = record.GetColumn(oldColumnName);
+						oldValues[j] = value;
+					}
 
-					var newValue = aggregate.ProcessColumn(value);
+					var newValue = aggregate.ProcessColumn(oldValues);
 
 					newRecord.AddColumn(aggregate.NewColumnName, newValue);
 				}
@@ -106,5 +112,15 @@ namespace DataProcessor.Aggregate
 		bool IOutBuffer.TryTake(out IDataRow row) => this._readBuffer.TryTake(out row);
 
 		bool IOutBuffer.IsCompleted() => this._readBuffer.IsCompleted();
+
+		public void AddAggregate(params IAggregate[] aggregates)
+		{
+			if(aggregates == null || aggregates.Length <= 0) { return; }
+
+			foreach (var arg in aggregates)
+			{
+				this._aggregates.Add(arg);
+			}
+		}
 	}
 }

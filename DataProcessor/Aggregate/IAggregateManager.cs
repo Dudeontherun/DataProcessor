@@ -8,6 +8,7 @@ namespace DataProcessor.Interfaces
 		protected IOutBuffer InputBuffer { get; }
 
 		public void AddAggregate(IAggregate aggregate);
+		public void AddAggregate(params IAggregate[] aggregates);
 		public void AddAggregate(int position, IAggregate aggregate);
 		public bool RemoveAggregate(IAggregate aggregate);
 		public void RemoveAggregate(int position);

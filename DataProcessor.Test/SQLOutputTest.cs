@@ -17,13 +17,11 @@ namespace DataProcessor.Test
 	{
 		private ConcurrentBuffer _buffer;
 
-		public object ConnectionStringBuilder { get; private set; }
-
 		[TestInitialize]
 		public void Init()
 		{
 			//100,000,000
-			long size = 100000000 / 2;
+			long size = 10000000;
 			if (size > int.MaxValue) { this._buffer = new ConcurrentBuffer(10000); }
 			else { this._buffer = new ConcurrentBuffer((int)size); }
 
