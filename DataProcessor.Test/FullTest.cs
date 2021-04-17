@@ -17,7 +17,7 @@ namespace DataProcessor.Test
 	[TestClass]
 	public class FullTest
 	{
-		[TestMethod]
+		[TestInitialize]
 		public void PopulateTestData()
 		{
 			int numOfRows = 5000;

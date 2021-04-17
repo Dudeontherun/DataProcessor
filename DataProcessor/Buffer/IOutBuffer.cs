@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataProcessor.Buffer
 {
-	public interface IOutBuffer
+	public interface IOutBuffer: IDisposable
 	{
 		public IDataRow Take();
 		public bool TryTake(out IDataRow row);

@@ -12,6 +12,7 @@ namespace DataProcessor.Interfaces
 		public void AddColumn(string columnName, object obj);
 		public string GetColumnName(int index);
 		public int GetColumnCount();
+		public int GetOrdinal(string name);
 
 		public IEnumerable<string> GetColumns();
 		public IEnumerable<object> GetValues();

@@ -96,5 +96,11 @@ namespace DataProcessor.DataRow
 			var columns = this._fields.Select(i => i.Key);
 			return columns;
 		}
+
+		public int GetOrdinal(string name)
+		{
+			if(this._index.ContainsValue(name)) { return this._index.Single(i => i.Value == name).Key; }
+			else { throw new Exception("name is not found"); }
+		}
 	}
 }
