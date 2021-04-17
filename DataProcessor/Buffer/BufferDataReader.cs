@@ -34,7 +34,9 @@ namespace DataProcessor.Buffer
 				this._recordsAffected++;
 				ret = !this._buffer.IsCompleted();
 			}
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
 			catch(Exception e) { ret = false; }
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
 			
 			return ret;
 		}

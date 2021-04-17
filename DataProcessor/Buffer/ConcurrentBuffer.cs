@@ -26,7 +26,9 @@ namespace DataProcessor
 				{
 					return this._buffer.Take();
 				}
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
 				catch (Exception e) { return null; }
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
 			}
 			else { return null; }
 		}

@@ -23,8 +23,8 @@ namespace DataProcessor.Test
 		public void Init()
 		{
 			//100,000,000
-			long size = 100000000;
-			if (size > int.MaxValue) { this._buffer = new ConcurrentBuffer(100000); }
+			long size = 100000000 / 2;
+			if (size > int.MaxValue) { this._buffer = new ConcurrentBuffer(10000); }
 			else { this._buffer = new ConcurrentBuffer((int)size); }
 
 			var rng = System.Security.Cryptography.RNGCryptoServiceProvider.Create();

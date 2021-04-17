@@ -11,7 +11,9 @@ namespace DataProcessor.Output
 	{
 		public bool IsSingleThreaded => true;
 
+#pragma warning disable CS0108 // 'SQLOutput.Id' hides inherited member 'BaseProcessor.Id'. Use the new keyword if hiding was intended.
 		public Guid Id { get; set; }
+#pragma warning restore CS0108 // 'SQLOutput.Id' hides inherited member 'BaseProcessor.Id'. Use the new keyword if hiding was intended.
 
 		private IOutBuffer _input;
 		private BufferDataReader _reader;
