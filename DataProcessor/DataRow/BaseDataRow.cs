@@ -48,7 +48,9 @@ namespace DataProcessor.DataRow
 
 		public object GetColumn(string columnName)
 		{
-			object ret = this._fields[columnName];
+			object ret = null;
+			if (this._fields.ContainsKey(columnName)) { ret = this._fields[columnName]; }
+
 			return ret;
 		}
 

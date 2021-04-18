@@ -13,7 +13,6 @@ namespace DataProcessor.Buffer
 		public BufferDataReader(IOutBuffer buffer)
 		{
 			this._buffer = buffer;
-			this.Read();
 		}
 
 		public bool NextResult()
@@ -35,9 +34,9 @@ namespace DataProcessor.Buffer
 				ret = !this._buffer.IsCompleted();
 			}
 #pragma warning disable CS0168 // The variable 'e' is declared but never used
-			catch(Exception e) { ret = false; }
+			catch (Exception e) { ret = false; }
 #pragma warning restore CS0168 // The variable 'e' is declared but never used
-			
+
 			return ret;
 		}
 
@@ -83,8 +82,16 @@ namespace DataProcessor.Buffer
 		/// </summary>
 		public int RecordsAffected => this._recordsAffected;
 
+		public int FieldCount
+		{
+			get
+			{
+				if (this._currentRow == null) { Read(); }
 
-		public int FieldCount => this._currentRow.GetColumnCount();
+				int ret = this._currentRow.GetColumnCount();
+				return ret;
+			}
+		}
 
 		/// <summary>
 		/// Dispose everything I guess.
@@ -315,9 +322,7 @@ namespace DataProcessor.Buffer
 		public bool IsDBNull(int i)
 		{
 			var column = this._currentRow.GetColumn(i);
-			bool ret = column is null 
-			|| column == null 
-			|| (column is string && String.IsNullOrEmpty((string)column));
+			bool ret = column is null;
 
 			return ret;
 		}

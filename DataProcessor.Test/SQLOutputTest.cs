@@ -22,8 +22,7 @@ namespace DataProcessor.Test
 		{
 			//100,000,000
 			long size = 10000000;
-			if (size > int.MaxValue) { this._buffer = new ConcurrentBuffer(10000); }
-			else { this._buffer = new ConcurrentBuffer((int)size); }
+			 this._buffer = new ConcurrentBuffer(100000); 
 
 			var rng = System.Security.Cryptography.RNGCryptoServiceProvider.Create();
 			Task.Run(() =>
@@ -56,6 +55,8 @@ namespace DataProcessor.Test
 
 			
 			string connectionString = connBuilder.ToString();
+
+			//TODO: Figure out how Mocking SQL works and implement it.  I don't like having sql server on my consumer machine.
 			SQLOutput output = new SQLOutput(_buffer, int.MaxValue, connectionString, "dbo.Import");
 			output.Start();
 

@@ -77,7 +77,7 @@ namespace DataProcessor.Test
 			{
 				CsvInputProcessor input = new CsvInputProcessor(20000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\FULLTEXT.csv");
 				AggregateManager manager = new AggregateManager(input, 20000, 1);
-				Aggregate.Aggregate aggregate = new Aggregate.Aggregate(new Func<object, object>(i =>
+				Aggregate.Aggregate aggregate = new Aggregate.Aggregate(@"(i =>
 				{
 					object ret = null;
 					if (i is string)
@@ -87,9 +87,9 @@ namespace DataProcessor.Test
 					}
 
 					return ret;
-				}), "field1", "bubba", Guid.NewGuid());
+				})", "field1", "bubba", Guid.NewGuid());
 
-				Aggregate.Aggregate aggregate1 = new Aggregate.Aggregate(new Func<object, object>(i =>
+				Aggregate.Aggregate aggregate1 = new Aggregate.Aggregate(@"(i =>
 				{
 					object ret = null;
 					if (i is string)
@@ -99,7 +99,7 @@ namespace DataProcessor.Test
 					}
 
 					return ret;
-				}), "field1", "field1", Guid.NewGuid());
+				})", "field1", "field1", Guid.NewGuid());
 
 				manager.AddAggregate(aggregate);
 				manager.AddAggregate(aggregate1);

@@ -9,8 +9,10 @@ namespace DataProcessor.Interfaces
 		public string[] OldColumnNames { get; set; }
 		public string NewColumnName { get; set; }
 
+		public bool Init();
+
 		public object ProcessColumn(params object[] item);
 
-		public Func<object, object> Function { get; set; }
+		public string Function { get; }
 	}
 }

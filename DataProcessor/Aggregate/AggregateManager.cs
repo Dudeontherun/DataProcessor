@@ -90,6 +90,8 @@ namespace DataProcessor.Aggregate
 				for (int i = 0; i < aggregates.Count; i++)
 				{
 					var aggregate = aggregates[i];
+					aggregate.Init();
+
 					object[] oldValues = new object[aggregate.OldColumnNames.Length];
 					for(int j = 0; j < oldValues.Length; j++)
 					{
