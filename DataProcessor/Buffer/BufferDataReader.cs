@@ -9,7 +9,6 @@ namespace DataProcessor.Buffer
 {
 	public sealed class BufferDataReader : System.Data.IDataReader
 	{
-
 		public BufferDataReader(IOutBuffer buffer)
 		{
 			this._buffer = buffer;

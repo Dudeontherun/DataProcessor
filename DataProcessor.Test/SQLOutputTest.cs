@@ -53,7 +53,6 @@ namespace DataProcessor.Test
 			connBuilder.InitialCatalog = "CsvImportTest";
 			connBuilder.UserID = connBuilder.Password = "user";
 
-			
 			string connectionString = connBuilder.ToString();
 
 			//TODO: Figure out how Mocking SQL works and implement it.  I don't like having sql server on my consumer machine.

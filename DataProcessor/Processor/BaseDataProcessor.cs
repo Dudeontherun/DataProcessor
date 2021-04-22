@@ -9,6 +9,12 @@ namespace DataProcessor.Base
 		public IAggregateManager AggregateManager { get; set; }
 		public IOutputProcessor Output { get; set; }
 
+		public BaseDataProcessor(IInputProcessor input, IOutputProcessor output)
+		{
+			this.Input = input;
+			this.Output = output;
+		}
+
 		public BaseDataProcessor(IInputProcessor input, IAggregateManager aggregateManager, IOutputProcessor output)
 		{
 			this.Input = input;
@@ -18,14 +24,17 @@ namespace DataProcessor.Base
 
 		public bool IsFinished()
 		{
-			return Input.IsCompleted() && AggregateManager.IsCompleted() && Output.IsCompleted();
+			bool inputCompleted = (Input != null) ? Input.IsCompleted() : true;
+			bool aggregateCompleted = (AggregateManager != null) ? AggregateManager.IsCompleted() : true;
+			bool outputCompleted = (Output != null) ? Output.IsCompleted() : true;
+			return inputCompleted && aggregateCompleted && outputCompleted;
 		}
 
 		public void Start()
 		{
-			this.Input.Start();
-			this.AggregateManager.Start();
-			this.Output.Start();
+			if(this.Input != null) { this.Input.Start(); }
+			if(this.AggregateManager != null) { this.AggregateManager.Start(); }
+			if(this.Output != null) { this.Output.Start(); }
 		}
 
 		public void Stop(bool forceStop = false)
