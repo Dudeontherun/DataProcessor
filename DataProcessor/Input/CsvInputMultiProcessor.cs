@@ -60,6 +60,7 @@ namespace DataProcessor.Input
 					if (columns.Length == 0) { throw new Exception("Columns names are bad,  No column names found"); }
 
 					this._columnNames = columns.ToList().AsReadOnly();
+					return;
 				}
 				else { while (this._columnNames == null || this._columnNames.Count == 0) { int i = 0; } }
 

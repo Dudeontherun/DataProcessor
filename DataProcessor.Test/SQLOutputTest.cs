@@ -27,19 +27,17 @@ namespace DataProcessor.Test
 			var rng = System.Security.Cryptography.RNGCryptoServiceProvider.Create();
 			Task.Run(() =>
 			{
-				for(long i = 0; i < size; i++)
+				Parallel.For(0, size, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount },
+				(i, state) =>
 				{
-					Task.Run(() =>
-					{
-						byte[] bytes = new byte[1024];
-						rng.GetBytes(bytes);
-						IDataRow row = new BaseDataRow();
-						row.SetColumn("Id", Guid.NewGuid());
-						row.SetColumn("Name", Convert.ToBase64String(bytes, 0, 20));
-						row.SetColumn("Salary", Convert.ToInt32(bytes[0]));
-						this._buffer.Add(row);
-					});
-				}
+					byte[] bytes = new byte[1024];
+					rng.GetBytes(bytes);
+					IDataRow row = new BaseDataRow();
+					row.SetColumn("Id", Guid.NewGuid());
+					row.SetColumn("Name", Convert.ToBase64String(bytes, 0, 20));
+					row.SetColumn("Salary", Convert.ToInt32(bytes[0]));
+					this._buffer.Add(row);
+				});
 
 				this._buffer.CompleteAdding();
 			});

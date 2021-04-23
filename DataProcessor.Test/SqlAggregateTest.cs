@@ -31,11 +31,11 @@ namespace DataProcessor.Test
 
 			string connectionString = connBuilder.ToString();
 
-			CsvInputProcessor input = new CsvInputProcessor(100000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv");
+			IInputProcessor input = new CsvInputMultiProcessor(10000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv", 4);
 
 			//TODO: Make Aggregate look at multiple columns.
 
-			AggregateManager manager = new AggregateManager(input, 10000, 1);
+			AggregateManager manager = new AggregateManager(input, 10000, 8);
 			Aggregate.Aggregate routeName = new Aggregate.Aggregate(@"() => ""Peerless""", "RouteName", Guid.NewGuid());
 			Aggregate.Aggregate AcctNum = new Aggregate.Aggregate("i => (string)i", "CustomerAccountID", "AcctNum", Guid.NewGuid());
 			Aggregate.Aggregate CircuitNum = new Aggregate.Aggregate(@"() => """"", "CircuitNum", Guid.NewGuid());

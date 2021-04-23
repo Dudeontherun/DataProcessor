@@ -16,7 +16,6 @@ namespace DataProcessor.Input
 		[XmlIgnore]
 		private readonly ConcurrentBuffer _readBuffer;
 
-
 		public string FilePath;
 
 		public CsvInputProcessor(int boundedCapacity, string filePath) : base(1)
@@ -49,7 +48,7 @@ namespace DataProcessor.Input
 			if(!File.Exists(this.FilePath)) { throw new Exception("File " + this.FilePath + " does not exist."); }
 
 			bool skipHeader = false;
-			string[] headers = new string[0];
+			string[] headers = Array.Empty<string>();
 			using (TextFieldParser parser = new TextFieldParser(new StreamReader(File.OpenRead(this.FilePath), bufferSize: 8192 * 10, leaveOpen: false)))
 			{
 				parser.TextFieldType = FieldType.Delimited;
