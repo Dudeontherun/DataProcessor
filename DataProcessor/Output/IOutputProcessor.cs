@@ -8,7 +8,7 @@ namespace DataProcessor.Interfaces
 
 		public bool IsSingleThreaded { get; }
 
-		protected void Process();
+		public void Process();
 
 		public bool IsCompleted();
 	}

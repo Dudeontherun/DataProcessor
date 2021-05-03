@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace DataProcessor
 {
@@ -38,9 +39,16 @@ namespace DataProcessor
 			return this._buffer.TryTake(out row);
 		}
 
+		private int _waitingToAdd = 0;
+		public int WaitingToAdd { get => _waitingToAdd; }
+
 		public void Add(IDataRow row)
 		{
-			this._buffer.Add(row);
+			Interlocked.Increment(ref this._waitingToAdd);
+
+			try { this._buffer.Add(row); }
+			catch(Exception e) { throw e; }
+			finally {  Interlocked.Decrement(ref _waitingToAdd); }
 		}
 
 		public List<IDataRow> GetBufferItems()
@@ -51,6 +59,8 @@ namespace DataProcessor
 			list.RemoveAll(i => i == null);
 			return list;
 		}
+
+		public int Count => _buffer.Count;
 
 		public void CompleteAdding()
 		{

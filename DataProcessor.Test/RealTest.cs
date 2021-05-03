@@ -17,36 +17,21 @@ using System.Threading.Tasks;
 namespace DataProcessor.Test
 {
 	[TestClass]
-	public class SqlAggregateTest
+	public class RealTest
 	{
-
-		[TestMethod]
-		public void Put()
+		private IAggregate[] GetAggregates()
 		{
-
-			var connBuilder = new SqlConnectionStringBuilder();
-			connBuilder.DataSource = System.Net.Dns.GetHostName();
-			connBuilder.InitialCatalog = "CsvImportTest";
-			connBuilder.UserID = connBuilder.Password = "user";
-
-			string connectionString = connBuilder.ToString();
-
-			IInputProcessor input = new CsvInputMultiProcessor(10000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv", 4);
-
-			//TODO: Make Aggregate look at multiple columns.
-
-			AggregateManager manager = new AggregateManager(input, 10000, 8);
 			Aggregate.Aggregate routeName = new Aggregate.Aggregate(@"() => ""Peerless""", "RouteName", Guid.NewGuid());
 			Aggregate.Aggregate AcctNum = new Aggregate.Aggregate("i => (string)i", "CustomerAccountID", "AcctNum", Guid.NewGuid());
 			Aggregate.Aggregate CircuitNum = new Aggregate.Aggregate(@"() => """"", "CircuitNum", Guid.NewGuid());
-			
-			Aggregate.Aggregate CallUtc = new Aggregate.Aggregate(@"(CallDate, CallTime) => (DateTime.Parse((string)CallDate) + TimeSpan.Parse((String)CallTime))", new string[2] { "CallDate", "CallTime"}, "CallUTC", Guid.NewGuid());
+
+			Aggregate.Aggregate CallUtc = new Aggregate.Aggregate(@"(CallDate, CallTime) => (DateTime.Parse((string)CallDate) + TimeSpan.Parse((String)CallTime))", new string[2] { "CallDate", "CallTime" }, "CallUTC", Guid.NewGuid());
 			Aggregate.Aggregate Direction = new Aggregate.Aggregate((@"() => ""OutBound"""), "Direction", Guid.NewGuid());
 			Aggregate.Aggregate BillableDurationMSec = new Aggregate.Aggregate("((i) => ((int)(Decimal.Parse((String)i) * 60 * 1000)))", "BillableTime", "BillableDurationMsecs", Guid.NewGuid());
 			Aggregate.Aggregate BillableDurationMin = new Aggregate.Aggregate("(i) => (Decimal.Parse((String)i))", "BillableTime", "BillableDurationMin", Guid.NewGuid());
 			Aggregate.Aggregate PerMinuteRate = new Aggregate.Aggregate("(i => String.IsNullOrEmpty((string)i) ? Decimal.Parse((String)i) : 0.0m)", "RatePerMinute", "PerMinuteRate", Guid.NewGuid());
 			//Takes Rateperminute and billable time
-			Aggregate.Aggregate PerMinuteRateCalc = new Aggregate.Aggregate(@"(RatePerMinute, BillableTime) => ((String.IsNullOrEmpty(((string)RatePerMinute)) == false && String.IsNullOrEmpty(((string)BillableTime)) == false && Decimal.Parse((String)BillableTime) != 0.000m) ? Decimal.Parse((String)RatePerMinute) / Decimal.Parse((String)BillableTime) : 0.0m)", new string[2] {"RatePerMinute", "BillableTime" }, "PerMinuteRateCalc", Guid.NewGuid());
+			Aggregate.Aggregate PerMinuteRateCalc = new Aggregate.Aggregate(@"(RatePerMinute, BillableTime) => ((String.IsNullOrEmpty(((string)RatePerMinute)) == false && String.IsNullOrEmpty(((string)BillableTime)) == false && Decimal.Parse((String)BillableTime) != 0.000m) ? Decimal.Parse((String)RatePerMinute) / Decimal.Parse((String)BillableTime) : 0.0m)", new string[2] { "RatePerMinute", "BillableTime" }, "PerMinuteRateCalc", Guid.NewGuid());
 			Aggregate.Aggregate BilledAmount = new Aggregate.Aggregate("(i => (String.IsNullOrEmpty((string)i) == false) ? Decimal.Parse((string)i) : 0.0m)", "BillableAmount", "BilledAmount", Guid.NewGuid());
 			Aggregate.Aggregate OrigNumber_10 = new Aggregate.Aggregate("(i => ((((String)i).Length >= 10) ? ((String)i).Substring(0, 10) : ((String)i)))", "OriginatingPhoneNumber", "OrigNumber_10", Guid.NewGuid());
 			Aggregate.Aggregate OrigLRN_10 = new Aggregate.Aggregate("(i => ((((String)i).Length >= 10) ? ((String)i).Substring(0, 10) : ((String)i)))", "OriginatingLRN", "OrigLRN_10", Guid.NewGuid());
@@ -65,28 +50,70 @@ namespace DataProcessor.Test
 			Aggregate.Aggregate Note2 = new Aggregate.Aggregate(@"(() => """")", "Note2", Guid.NewGuid());
 			Aggregate.Aggregate Note3 = new Aggregate.Aggregate(@"(() => """")", "Note3", Guid.NewGuid());
 
-			manager.AddAggregate(routeName,
-			AcctNum, CircuitNum,
-			CallUtc, Direction,
-			BillableDurationMSec, BillableDurationMin,
-			PerMinuteRate, PerMinuteRateCalc,
-			BilledAmount,
-			OrigNumber_10, OrigLRN_10, OrigLRN_6,
-			OrigCity, OrigState, OrigCountry,
-			DialedNumber_10, TermNumber_10, TermLRN_10, TermLRN_6,
-			TermCity, TermState, TermCountry,
-			Note1, Note2, Note3
-			);
+			IAggregate[] arr = new IAggregate[]
+			{
+				routeName,
+				AcctNum, CircuitNum,
+				CallUtc, Direction,
+				BillableDurationMSec, BillableDurationMin,
+				PerMinuteRate, PerMinuteRateCalc,
+				BilledAmount,
+				OrigNumber_10, OrigLRN_10, OrigLRN_6,
+				OrigCity, OrigState, OrigCountry,
+				DialedNumber_10, TermNumber_10, TermLRN_10, TermLRN_6,
+				TermCity, TermState, TermCountry,
+				Note1, Note2, Note3
+			};
+
+			return arr;
+		}
+
+		private void RunProcessor(IInputProcessor input)
+		{
+			var connBuilder = new SqlConnectionStringBuilder();
+			connBuilder.DataSource = System.Net.Dns.GetHostName();
+			connBuilder.InitialCatalog = "CsvImportTest";
+			connBuilder.UserID = connBuilder.Password = "user";
+
+			string connectionString = connBuilder.ToString();
+
+			AggregateManager manager = new AggregateManager(input, 10000, 8);
+
+			manager.AddAggregate(GetAggregates());
 
 			SQLOutput output = new SQLOutput(manager, int.MaxValue, connectionString, "dbo.yes");
 
 			BaseDataProcessor processor = new BaseDataProcessor(input, manager, output);
 			processor.Start();
 
+			//TODO: Add way to tell thread (event??) that the processor is finished.
 			while (processor.IsFinished() == false)
 			{
 				Thread.Sleep(1000);
 			}
 		}
+
+		[TestMethod]
+		public void PutWithCsvInputProcessor()
+		{
+			IInputProcessor input = new CsvInputProcessor(10000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv");
+			RunProcessor(input);
+		}
+
+		[TestMethod]
+		public void PutWithCsvInputMultiProcessor()
+		{
+			IInputProcessor input = new CsvInputMultiProcessor(10000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv", 4);
+			RunProcessor(input);
+		}
+
+		[TestMethod]
+		public void PutWithCsvInputThreadSafe()
+		{
+			IInputProcessor input = new CsvInputThreadSafe(10000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv", 4);
+			RunProcessor(input);
+		}
+
+
 	}
 }

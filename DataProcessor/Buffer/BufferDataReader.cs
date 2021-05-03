@@ -68,7 +68,7 @@ namespace DataProcessor.Buffer
 		}
 
 		/// <summary>
-		/// wtf?
+		/// wtf?  What is this?
 		/// </summary>
 		public int Depth => throw new NotSupportedException();
 

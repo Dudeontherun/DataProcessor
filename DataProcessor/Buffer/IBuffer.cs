@@ -7,6 +7,7 @@ namespace DataProcessor.Buffer
 {
 	public interface IBuffer
 	{
+		public int Count { get; }
 		public IDataRow Take();
 		public bool TryTake(out IDataRow row);
 		public void Add(IDataRow row);
