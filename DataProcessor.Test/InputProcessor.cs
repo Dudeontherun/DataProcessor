@@ -116,7 +116,7 @@ namespace DataProcessor.Test
 
 			AggregateManager manager = new AggregateManager(processor, 64000, 1);
 
-			manager.ProcesstTest();
+			manager.ProcessTest();
 
 			int count = manager.GetBufferItems().Count;
 			Assert.AreEqual(_numOfRows, count);
@@ -134,7 +134,7 @@ namespace DataProcessor.Test
 
 			AggregateManager manager = new AggregateManager(processor, 64000, 1);
 
-			manager.ProcesstTest();
+			manager.ProcessTest();
 
 			CsvOutputProcessor output = new CsvOutputProcessor(manager, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\InputTest2.csv");
 
@@ -170,7 +170,7 @@ namespace DataProcessor.Test
 		public void RunThreadSafeInput()
 		{
 			//CsvInputMultiProcessor InboundProcessor = new CsvInputMultiProcessor(64000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\TestData.csv", 5);
-			CsvInputThreadSafe inboundProcessor = new CsvInputThreadSafe(1000000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\Fixed-NETSTAFFHR_LD_2020_09_01_LD.csv", 24);
+			CsvInputThreadSafe inboundProcessor = new CsvInputThreadSafe(1000000, @"C:\Users\Jesse\Desktop\VS Projects\DataProcessor\DataProcessor.Test\InputTest.csv", 24);
 
 			var output = new BufferDepleter(inboundProcessor, 24);
 
