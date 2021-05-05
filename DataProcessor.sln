@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{45CCE15A-BFB0-434B-9E09-A49B85AF8ACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Test", "DataProcessor.Test\DataProcessor.Test.csproj", "{BA929FAC-B72C-48EF-91CC-6A24FD91C874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Test", "DataProcessor.Test\DataProcessor.Test.csproj", "{BA929FAC-B72C-48EF-91CC-6A24FD91C874}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Performance", "DataProcessor.Performance\DataProcessor.Performance.csproj", "{E6F64298-74E9-48BB-BC93-327BFE205BD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA929FAC-B72C-48EF-91CC-6A24FD91C874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F64298-74E9-48BB-BC93-327BFE205BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F64298-74E9-48BB-BC93-327BFE205BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F64298-74E9-48BB-BC93-327BFE205BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F64298-74E9-48BB-BC93-327BFE205BD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

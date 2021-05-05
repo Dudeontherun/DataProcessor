@@ -21,7 +21,7 @@ namespace DataProcessor.Test
 		public void Init()
 		{
 			//100,000,000
-			long size = 10000000;
+			long size = 1000000;
 			 this._buffer = new ConcurrentBuffer(100000); 
 
 			var rng = System.Security.Cryptography.RNGCryptoServiceProvider.Create();

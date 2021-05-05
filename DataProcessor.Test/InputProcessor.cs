@@ -16,7 +16,7 @@ namespace DataProcessor.Test
 	public class InputProcessor
 	{
 		#region Populate Data
-		private int _numOfRows = 5000;
+		private int _numOfRows = 1000000;
 
 		[TestInitialize]
 		public void PopulateTestData()

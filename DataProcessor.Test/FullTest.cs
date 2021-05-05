@@ -20,7 +20,7 @@ namespace DataProcessor.Test
 		[TestInitialize]
 		public void PopulateTestData()
 		{
-			int numOfRows = 5000;
+			int numOfRows = 1000000;
 
 			var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture)
 			{
